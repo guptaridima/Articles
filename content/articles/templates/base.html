@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <title>Articles</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+      <script>
+         function upvote(identifier) {
+             var payload = {"article_id":identifier};
+             console.log(identifier);
+              $.ajax({
+                 url: '/vote/',
+                 type: 'post',
+                 data: JSON.stringify(payload),
+                 contentType: 'application/json',
+                 dataType: 'json',
+                 success: function(response)  {
+                   if(response["status"] == true)  {
+                     window.location.href = "/";
+                   }
+                   else {
+                     alert("The server did a boo boo.")
+                   }
+                 }
+             });
+         }
+
+         $(function(){
+         $('#submit_button').click(function(event) {
+             var title = $('#title').val();
+             var Author = $('#Author').val();
+             var Content = $('#Content').val();
+
+             if (!title) {
+               alert("Enter title.");
+               return;
+             }
+             if (!Author) {
+               alert("Enter Author.");
+               return;
+             }
+             if (!Content) {
+               alert("Enter Content.");
+               return;
+             }
+
+             var payload = {"title":title,
+                           "Author":Author,
+                           "Content":Content};
+
+             $.ajax({
+                 url: '/add/',
+                 type: 'post',
+                 data: JSON.stringify(payload),
+                 contentType: 'application/json',
+                 dataType: 'json',
+                 success: function(response) {
+                   if(response["status"] == true)  {
+                     window.location.href = "/";
+                   }
+                   else {
+                     alert("The server did a boo boo.");
+                   }
+                 }});
+             });
+         });
+      </script>
+   </head>
+   <body>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+         <a class="navbar-brand" href="/">Articles</a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+               <li class="nav-item active">
+                  <a class="nav-link" href="/">Articles <span class="sr-only">(current)</span></a>
+               </li>
+               {% if user.is_authenticated %}
+               <li class="nav-item">
+                  <a class="nav-link" href="/add/">Add</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="/logout/">Logout</a>
+               </li>
+               {% else %}
+               <li class="nav-item">
+                  <a class="nav-link" href="/login/">Login</a>
+               </li>
+               {% endif %}
+            </ul>
+         </div>
+      </nav>
+      <div class="container">
+         {% block content %}
+         {% endblock %}
+      </div>
+   </body>
+</html>

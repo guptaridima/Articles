@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<br>
+<div class="row">
+   {%for item in result%}
+   <div class="col-lg-12">
+      <div class="card" style="width: 100%;">
+         <div class="card-body">
+            <h5 class="card-title">{{item.title}} </h5>
+            <p class="card-text">{{item.content}} <br> - By {{item.author_name}} </p>
+            {% if can_vote %}
+            <button class="button"
+               id="upvote_{{item.id}}"
+               class="btn btn-primary" onclick="upvote({{item.id}})">Upvote</button> -
+            {% endif %}
+            <em><small>Votes {{item.count}} </em></small>
+         </div>
+      </div>
+   </div>
+   {% endfor %}
+</div>
+<div class="pagination">
+   <span class="step-links">
+   {% if result.has_previous %}
+   <a href="?page=1">&laquo; first</a>
+   <a href="?page={{ result.previous_page_number }}">previous</a>
+   {% endif %}
+   <span class="current">
+   Page {{ result.number }} of {{ result.paginator.num_pages }}.
+   </span>
+   {% if result.has_next %}
+   <a href="?page={{ result.next_page_number }}">next</a>
+   <a href="?page={{ result.paginator.num_pages }}">last &raquo;</a>
+   {% endif %}
+   </span>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<br>
+<div class="row">
+   <div class="container">
+      <form action="/add/" method="post">
+         <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Enter Title" required>
+         </div>
+         <div class="form-group">
+            <label for="Author">Author</label>
+            <input type="text" class="form-control" id="Author" aria-describedby="emailHelp" placeholder="Enter Author" required>
+         </div>
+         <div class="form-group">
+            <label for="Content">Content</label>
+            <textarea class="form-control" id="Content" rows="6" required></textarea>
+         </div>
+         <button  id="submit_button" class="btn btn-primary">Submit</button>
+      </form>
+   </div>
+</div>
+{% endblock %}
